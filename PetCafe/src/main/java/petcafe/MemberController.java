@@ -6,21 +6,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
- * Servlet implementation class PostboardController
+ * Servlet implementation class MemberController
  */
-@WebServlet("/postboardControl")
-public class PostboardController extends HttpServlet {
+@WebServlet("/memberControl")
+public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	PostboardDAO dao;
+	MemberDAO dao;
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new PostboardDAO();
+		dao = new MemberDAO();
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,7 +30,7 @@ public class PostboardController extends HttpServlet {
 		String view = "";
 		
 		if (request.getParameter("action") == null) {
-			getServletContext().getRequestDispatcher("/postboardControl?action=list").forward(request, response);
+			getServletContext().getRequestDispatcher("/memberControl?action=list").forward(request, response);
 		} else {
 			switch(action) {
 			case "list":
@@ -37,6 +39,8 @@ public class PostboardController extends HttpServlet {
 			case "insert":
 				view = insert(request, response);
 				break;
+			case "login":
+				view = login(request, response);
 			}
 			
 			getServletContext().getRequestDispatcher("/petcafe/"+view).forward(request, response);
@@ -44,28 +48,61 @@ public class PostboardController extends HttpServlet {
 	}
 	
 	public String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("postboards", dao.getAll());
-		return "tmp/postboard_db_view_test.jsp";
+		request.setAttribute("members", dao.getAll());
+		return "tmp/member_db_test.jsp";
 	}
 	
 	public String insert(HttpServletRequest request, HttpServletResponse response) {
-		Postboard pb = new Postboard();
+		Member mem = new Member();
 		
 		try {
-			BeanUtils.populate(pb, request.getParameterMap());
+			BeanUtils.populate(mem, request.getParameterMap());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		
-		dao.insert(pb);
+		dao.insert(mem);
 		return list(request, response);
+	}
+	
+	public String login(HttpServletRequest request, HttpServletResponse response) {
+		Member login_input = new Member();
+		String view = "";
+		
+		try {
+			BeanUtils.populate(login_input, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		boolean success = dao.login(login_input);
+		if (!success) {
+			// 로그인 오류 처리
+			// 경고창을 띄우는 기능???
+			view = "tmp/tmp_login.jsp";
+		} else {
+			// mem의 id와 name을 세션에 저장
+			HttpSession session = request.getSession();
+			
+	
+			String mem_id = login_input.getId();
+			String mem_name = dao.getName(mem_id);
+			
+			session.setAttribute("mem_id", mem_id);
+			session.setAttribute("mem_name", mem_name);
+			
+			view = "view/mainpage.jsp";
+		}
+		
+		return view;
 	}
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostboardController() {
+    public MemberController() {
         super();
         // TODO Auto-generated constructor stub
     }

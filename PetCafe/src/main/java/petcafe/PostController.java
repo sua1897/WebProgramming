@@ -6,36 +6,34 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 /**
- * Servlet implementation class PostboardController
+ * Servlet implementation class PostController
  */
-@WebServlet("/postboardControl")
-public class PostboardController extends HttpServlet {
+@WebServlet("/postControl")
+public class PostController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	PostboardDAO dao;
+	PostDAO dao;
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new PostboardDAO();
+		dao = new PostDAO();
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
+		String pb = request.getParameter("postboard");
 		String view = "";
 		
 		if (request.getParameter("action") == null) {
-			getServletContext().getRequestDispatcher("/postboardControl?action=list").forward(request, response);
+			getServletContext().getRequestDispatcher("/postControl?action=list&postboard=all").forward(request, response);
 		} else {
 			switch(action) {
 			case "list":
-				view = list(request, response);
-				break;
-			case "insert":
-				view = insert(request, response);
+				view = list(pb, request, response);
 				break;
 			}
 			
@@ -43,29 +41,19 @@ public class PostboardController extends HttpServlet {
 		}
 	}
 	
-	public String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("postboards", dao.getAll());
-		return "tmp/postboard_db_view_test.jsp";
-	}
-	
-	public String insert(HttpServletRequest request, HttpServletResponse response) {
-		Postboard pb = new Postboard();
+	public String list(String pb, HttpServletRequest request, HttpServletResponse response) {
+		// request.setAttribute("posts", dao.getAll(pb));
 		
-		try {
-			BeanUtils.populate(pb, request.getParameterMap());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		HttpSession session = request.getSession();
+		session.setAttribute("now_pb", pb);
 		
-		
-		dao.insert(pb);
-		return list(request, response);
+		return "view/postboard_view.jsp";
 	}
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostboardController() {
+    public PostController() {
         super();
         // TODO Auto-generated constructor stub
     }

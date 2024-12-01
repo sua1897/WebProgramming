@@ -11,11 +11,20 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Home</a>
-     <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-warning">마이페이지</button>
-        <button type="button" class="btn btn-outline-warning">로그인</button>
+     <a class="navbar-brand" href="/petcafe/petcafe/view/mainpage.jsp">Home</a>
+     
+	<% String mem_name = (String)session.getAttribute("mem_name");
+	if (mem_name == null) { %>
+		<div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-warning" onclick="document.location.href='/petcafe/petcafe/tmp/tmp_login.jsp'">로그인</button>
       </div>
+	<% } else { %>
+     <div class="col-md-3 text-end">
+        <!-- <span class="navbar-brand mb-0 h1">안녕하세요, <%=mem_name %>님</span> -->
+        <button type="button" class="btn btn-warning">마이페이지</button>
+        <button type="button" class="btn btn-outline-warning" onclick="document.location.href='/petcafe/petcafe/view/mainpage.jsp'">로그아웃</button>
+      </div>
+     <% } %>
   </div>
 </nav>
 </body>
