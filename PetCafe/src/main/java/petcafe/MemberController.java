@@ -41,6 +41,10 @@ public class MemberController extends HttpServlet {
 				break;
 			case "login":
 				view = login(request, response);
+				break;
+			case "logout":
+				view = logout(request, response);
+				break;
 			}
 			
 			getServletContext().getRequestDispatcher("/petcafe/"+view).forward(request, response);
@@ -98,6 +102,15 @@ public class MemberController extends HttpServlet {
 		
 		return view;
 	}
+	
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("mem_id");
+		session.removeAttribute("mem_name");
+		
+		return "view/mainpage.jsp";
+	}
+	
        
     /**
      * @see HttpServlet#HttpServlet()

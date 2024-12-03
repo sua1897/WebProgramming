@@ -123,9 +123,9 @@ public class MemberDAO {
 			
 			ResultSet rs = pstmt.executeQuery();
 			
-			if (rs.last()) {
+			if (rs.next()) {
 				// 일치하는 아이디
-				name = new String(rs.getString(1));
+				name = rs.getString(1);
 			} else {
 				// 아이디가 존재하지 않음
 			}

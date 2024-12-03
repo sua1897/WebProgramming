@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,37 +23,30 @@
     	<div class="col">
 		<!-- 검색창 -->
 		<form>
-		<div class="input-group mb-3">
-  			<div class="input-group mb-3">
-  				<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">검색옵션</button>
-  				<ul class="dropdown-menu">
-    				<li><a class="dropdown-item" href="#">제목</a></li>
-    				<li><a class="dropdown-item" href="#">내용</a></li>
-    				<li><a class="dropdown-item" href="#">작성자</a></li>
-    			</ul>
-  				<input type="text" class="form-control" aria-label="Text input with dropdown button">
-  				<button class="btn btn-outline-secondary" type="submit" id="search_btn">검색</button>
-			</div>
+		<div class="input-group input-group-sm mb-3">
+			<div class="col-md-auto">
+    			<select class="form-select" required name="search_option">
+      				<option value="">검색 옵션</option>
+      				<option value="title">제목</option>
+      				<option value="body">내용</option>
+      				<option value="writer">작성자</option>
+    			</select>
+    			<div class="invalid-feedback">검색옵션을 선택해주세요.</div>
+    		</div>
+  			<input type="text" class="form-control">
+  			<button class="btn btn-outline-secondary" type="submit" id="search_btn">검색</button>
 		</div>
 		</form>
 		</div>
-		<div class="col-md-auto">
-		<!-- 글쓰기 버튼 -->
-		<button class="btn btn-outline-secondary" type="button" id="post_write_btn">글쓰기</button>
 		</div>
-		</div>
+
 		<!-- 게시글 목록 -->
 			<div class="list-group list-group-flush">
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  				<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
+				<c:forEach items="${posts}" var="post">
+				
+  				<a href="/petcafe/postControl?action=postView&option=${post.post_idx}" class="list-group-item list-group-item-action">${post.title}</a>
+  			
+  				</c:forEach>
   			</div>
 		<!-- 페이지 넘버 -->
 		<nav aria-label="Page navigation example">

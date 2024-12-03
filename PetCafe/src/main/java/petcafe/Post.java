@@ -10,6 +10,9 @@ public class Post {
 	private String body;
 	private String image;
 	
+	private String postboard_kr;
+	private String member_name;
+	
 	public int getPost_idx() {
 		return post_idx;
 	}
@@ -57,5 +60,25 @@ public class Post {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public String getPostboard_kr() {
+		return postboard_kr;
+	}
+	
+	public void setPostboard_kr() {
+		if (postboard != null) {
+			if (postboard.equals("free")) {
+				postboard_kr = "자유 게시판";
+			} else {
+				postboard_kr = "질문 게시판";
+			}
+		}
+	}
+	
+	public String getMember_name() {
+		return member_name;
+	}
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
 	}
 }

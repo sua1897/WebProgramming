@@ -11,32 +11,32 @@
 <body>
 	<%@ include file="header_1.jsp" %>
 	
-	<!-- 수정 폼 -->
-	<form>
+	<form method="post" action="/petcafe/postControl?action=insert">
   		<div class="row mb-3">
     		<label for="choosePostboard" class="col-sm-2 col-form-label">게시판 선택</label>
     		<!-- 콤보박스 -->
-    		<div class="col-sm-10">
-      			<div class="dropdown">
-  					<button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    				게시판 선택</button>
-  					<ul class="dropdown-menu">
-    					<li><a class="dropdown-item" href="#">자유 게시판</a></li>
-    					<li><a class="dropdown-item" href="#">질문 게시판</a></li>
-  					</ul>
-				</div>
+    		<div class="col-md-auto">
+    		<div class="mb-3">
+    			<select class="form-select" required aria-label="select example" name="postboard">
+      				<option value="">게시판 선택</option>
+      				<option value="free">자유 게시판</option>
+      				<option value="ask">질문 게시판</option>
+    			</select>
+    		<div class="invalid-feedback">게시판을 선택해주세요.</div>
     		</div>
+    		</div>
+
     	</div>
     	<div class="row mb-3">
     		<label for="chooseAspect" class="col-sm-2 col-form-label">공개범위 선택</label>
     		<!-- 라디오 버튼 -->
     		<div class="col-sm-10">
     			<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+  					<input class="form-check-input" type="radio" name="only_member" value="true" required>
   					<label class="form-check-label" for="inlineRadio1">회원에게만 공개</label>
 				</div>
 				<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+  					<input class="form-check-input" type="radio" name="only_member" value="false" required>
   					<label class="form-check-label" for="inlineRadio2">비회원에게도 공개</label>
 				</div>
     		</div>
@@ -45,7 +45,7 @@
     		<label for="inputTitle" class="col-sm-2 col-form-label">제목</label>
     		<!-- 제목 입력창 -->
     		<div class="col-sm-10">
-    			<input type="text" class="form-control" aria-label="post_title">
+    			<input type="text" class="form-control" name="title" required>
     		</div>
     	</div>
     	<div class="row mb-3">
@@ -53,7 +53,7 @@
     		<!-- 내용 입력창 -->
     		<div class="col-sm-10">
     			<div class="input-group">
-  					<textarea class="form-control"></textarea>
+  					<textarea class="form-control" name="body" required></textarea>
 				</div>
     		</div>
     	</div>
@@ -62,10 +62,12 @@
     		<!-- 이미지 업로드 -->
     		<div class="col-sm-10">
     			<div class="input-group mb-3">
-  					<input type="file" class="form-control" id="inputImageFile">
+  					<input type="file" class="form-control" id="inputImageFile" name="image">
 				</div>
     		</div>
     	</div>
     	<button type="submit" class="btn btn-secondary">게시글 업로드</button>
   </form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+</html>

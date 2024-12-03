@@ -17,27 +17,30 @@
 
 <div class="d-grid gap-2">
 	<% if (now_pb.equals("all")) { %>
-  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=list&postboard=all'">전체 게시글</button>
+  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=all'">전체 게시글</button>
   	<% } else { %>
-  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=list&postboard=all'">전체 게시글</button>
+  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=all'">전체 게시글</button>
   	<% } %>
   	
   	<% if (now_pb.equals("free")) { %>
-  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=list&postboard=free'">자유 게시판</button>
+  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=free'">자유 게시판</button>
 	<% } else { %>  
-  	<button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=list&postboard=free'">자유 게시판</button>
+  	<button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=free'">자유 게시판</button>
   	<% } %>
   	
   	<% if (now_pb.equals("ask")) { %>
-  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=list&postboard=ask'">질문 게시판</button>
+  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=ask'">질문 게시판</button>
   	<% } else { %>
-  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=list&postboard=ask'">질문 게시판</button>
+  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByPb&option=ask'">질문 게시판</button>
   	<% } %>
   
+  	<% String mem_id = (String)session.getAttribute("mem_id");
+  		if (mem_id != null) { %>
   	<% if (now_pb.equals("bookmark")) { %>
-  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=list&postboard=bookmark'">북마크 게시글</button>
+  <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=listByBk&option=all'">북마크 게시글</button>
   	<% } else { %>
-  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=list&postboard=bookmark'">북마크 게시글</button>
+  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByBk&option=all'">북마크 게시글</button>
+  	<% } %>
   	<% } %>
   
 </div>

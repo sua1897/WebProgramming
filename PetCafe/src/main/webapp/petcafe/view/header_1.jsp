@@ -21,8 +21,9 @@
 	<% } else { %>
      <div class="col-md-3 text-end">
         <!-- <span class="navbar-brand mb-0 h1">안녕하세요, <%=mem_name %>님</span> -->
+        <button class="btn btn-outline-secondary" type="button" id="post_write_btn" onclick="document.location.href='/petcafe/petcafe/view/post_write.jsp'">글쓰기</button>
         <button type="button" class="btn btn-warning">마이페이지</button>
-        <button type="button" class="btn btn-outline-warning" onclick="document.location.href='/petcafe/petcafe/view/mainpage.jsp'">로그아웃</button>
+        <button type="button" class="btn btn-outline-warning" onclick="document.location.href='/petcafe/memberControl?action=logout'">로그아웃</button>
       </div>
      <% } %>
   </div>
