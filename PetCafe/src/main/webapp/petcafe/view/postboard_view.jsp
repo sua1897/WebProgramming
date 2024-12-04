@@ -22,7 +22,7 @@
     	<div class="row">
     	<div class="col">
 		<!-- 검색창 -->
-		<form>
+		<form method="post" action="/petcafe/postControl?action=search">
 		<div class="input-group input-group-sm mb-3">
 			<div class="col-md-auto">
     			<select class="form-select" required name="search_option">
@@ -33,7 +33,7 @@
     			</select>
     			<div class="invalid-feedback">검색옵션을 선택해주세요.</div>
     		</div>
-  			<input type="text" class="form-control">
+  			<input type="text" class="form-control" name="search_text">
   			<button class="btn btn-outline-secondary" type="submit" id="search_btn">검색</button>
 		</div>
 		</form>

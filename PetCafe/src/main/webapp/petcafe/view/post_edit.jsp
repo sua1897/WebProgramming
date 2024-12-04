@@ -11,7 +11,7 @@
 <body>
 	<%@ include file="header_1.jsp" %>
 	
-	<form method="post" action="/petcafe/postControl?action=insert">
+	<form method="post" action="/petcafe/postControl?action=editPost">
   		<div class="row mb-3">
     		<label for="choosePostboard" class="col-sm-2 col-form-label">게시판 선택</label>
     		<!-- 콤보박스 -->
@@ -45,7 +45,7 @@
     		<label for="inputTitle" class="col-sm-2 col-form-label">제목</label>
     		<!-- 제목 입력창 -->
     		<div class="col-sm-10">
-    			<input type="text" class="form-control" name="title" required>
+    			<input type="text" class="form-control" name="title" required value=${ori_post.title}>
     		</div>
     	</div>
     	<div class="row mb-3">
@@ -53,12 +53,12 @@
     		<!-- 내용 입력창 -->
     		<div class="col-sm-10">
     			<div class="input-group">
-  					<textarea class="form-control" name="body" required></textarea>
+  					<textarea class="form-control" name="body" required>${ori_post.body}</textarea>
 				</div>
     		</div>
     	</div>
     	
-    	<button type="submit" class="btn btn-secondary">게시글 업로드</button>
+    	<button type="submit" class="btn btn-secondary">게시글 수정</button>
   </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

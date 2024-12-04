@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,8 +27,8 @@
     			if (now_mem_id.equals((String)request.getAttribute("now_post_writer_id"))) { %>
   				<div class="row justify-content-end">
     				<div class="col-4">
-      					<button type="button" class="btn btn-secondary">수정</button>
-      					<button type="button" class="btn btn-secondary">삭제</button>
+      					<button type="button" class="btn btn-secondary" onclick="document.location.href='/petcafe/postControl?action=edit'">수정</button>
+      					<button type="button" class="btn btn-secondary" onclick="document.location.href='/petcafe/postControl?action=delete'">삭제</button>
     				</div>
     			</div>
     			<% }} %>
@@ -47,16 +48,6 @@
     				</div>
     				<div class="col-md-auto">
       					<p class="text-center fs-6 fw-semibold">${post.post_date}</p>
-    				</div>
-    			</div>
-    			<!-- 이미지 -->
-    			<div class="row justify-content-start">
-    				<div class="col-md-auto">
-    					<% String img_str = (String)request.getAttribute("now_post_img");
-    					if (img_str != null) { if (!img_str.equals("")) {%>
-    					여기에 이미지 표시
-    					<!-- <img src="..." class="img-fluid" alt="..."> -->
-    					<% }} %>
     				</div>
     			</div>
     			<!-- 내용 -->
@@ -87,36 +78,33 @@
     				</div>
     			</div>
     			<!-- 댓글 작성-->
-    			<form>
+    			<% if (now_mem_id != null) { %>
+    			<form method="post" action="/petcafe/postControl?action=insertReply">
     				<div class="input-group">
   						<span class="input-group-text">댓글</span>
-  						<textarea class="form-control"></textarea>
-  						<button class="btn btn-outline-secondary" type="submit" id="reply_submit">작성</button>
+  						<textarea class="form-control" name="body"></textarea>
+  						<button class="btn btn-outline-secondary" type="submit">작성</button>
 					</div>
     			</form>
+    			<% } %>
     			<!-- 댓글 목록 -->
+    			
+    			<c:forEach items="${replys}" var="reply">
+    			
     			<div class="mb-3 row">
-    				<label class="col-sm-2 col-form-label">닉네임</label>
+    				<label class="col-sm-2 col-form-label">${reply.member_name}</label>
     				<div class="col">
-      					<input type="text" readonly class="form-control-plaintext" id="reply_view" value="여기에 댓글 표시">
-      					<button class="btn btn-outline-secondary" type="button" id="reply_edit">수정</button>
-      					<button class="btn btn-outline-secondary" type="button" id="reply_remove">삭제</button>
+      					<input type="text" readonly class="form-control-plaintext" value="${reply.body}">
+      					
+      					<c:if test="${mem_id eq reply.member_id}">
+      						<button class="btn btn-outline-secondary" type="button" onclick="document.location.href='/petcafe/postControl?action=deleteReply&option=${reply.reply_idx}'">삭제</button>
+      					</c:if>
     				</div>
   				</div>
-  				<div class="mb-3 row">
-    				<label class="col-sm-2 col-form-label">닉네임</label>
-    				<div class="col">
-      					<input type="text" readonly class="form-control-plaintext" id="reply_view" value="여기에 댓글 표시">
-      					<button class="btn btn-outline-secondary" type="button" id="reply_edit">수정</button>
-      					<button class="btn btn-outline-secondary" type="button" id="reply_remove">삭제</button>
-    				</div>
-  				</div>
-  				<div class="mb-3 row">
-    				<label class="col-sm-2 col-form-label">닉네임</label>
-    				<div class="col">
-      					<input type="text" readonly class="form-control-plaintext" id="reply_view" value="여기에 댓글 표시">
-    				</div>
-  				</div>
+  				
+  				</c:forEach>
+  				
+  				
     		</div>
     	</div>
     </div>
