@@ -59,22 +59,54 @@
     			<!-- 좋아요 및 북마크 -->
     			<div class="row">
     				<div class="col-md-auto">
-      					<button type="button" class="btn">
+    					<c:choose>
+    					<c:when test="${empty mem_id}">
     						<img src="/petcafe/petcafe/img/heart-empty.png" width="30" height="30">
-    				</button>
+    					</c:when>
+    					<c:otherwise>
+    						<c:choose>
+    						<c:when test="${!is_like_it_checked}">
+      						<button type="button" class="btn" onclick="document.location.href='/petcafe/postControl?action=addLike_it'">
+    							<img src="/petcafe/petcafe/img/heart-empty.png" width="30" height="30">
+    						</button>
+    						</c:when>
+    						<c:otherwise>
+    						<button type="button" class="btn" onclick="document.location.href='/petcafe/postControl?action=deleteLike_it'">
+    							<img src="/petcafe/petcafe/img/heart-full.png" width="30" height="30">
+    						</button>
+    						</c:otherwise>
+    						</c:choose>
+    					</c:otherwise>
+    					</c:choose>
     				</div>
     				<div class="col-md-auto align-self-end">
-      					<p class="text-center fs-6 fw-semibold">좋아요 수</p>
+      					<p class="text-center fs-6 fw-semibold">${like_it_count}</p>
     				</div>
     				<div class="col-4">
     				</div>
     				<div class="col-md-auto">
-      					<button type="button" class="btn">
+      					<c:choose>
+    					<c:when test="${empty mem_id}">
     						<img src="/petcafe/petcafe/img/bookmark-empty.png" width="30" height="30">
-    				</button>
+    					</c:when>
+    					<c:otherwise>
+    						<c:choose>
+    						<c:when test="${!is_bookmark_checked}">
+      						<button type="button" class="btn" onclick="document.location.href='/petcafe/postControl?action=addBookmark'">
+    							<img src="/petcafe/petcafe/img/bookmark-empty.png" width="30" height="30">
+    						</button>
+    						</c:when>
+    						<c:otherwise>
+    						<button type="button" class="btn" onclick="document.location.href='/petcafe/postControl?action=deleteBookmark'">
+    							<img src="/petcafe/petcafe/img/bookmark-full.png" width="30" height="30">
+    						</button>
+    						</c:otherwise>
+    						</c:choose>
+    					</c:otherwise>
+    					</c:choose>
     				</div>
     				<div class="col-md-auto align-self-end">
-      					<p class="text-center fs-6 fw-semibold">북마크 수</p>
+      					<p class="text-center fs-6 fw-semibold">${bookmark_count}</p>
     				</div>
     			</div>
     			<!-- 댓글 작성-->
