@@ -31,7 +31,7 @@ public class PostController extends HttpServlet {
 		String view = "";
 		
 		if (request.getParameter("action") == null) {
-			getServletContext().getRequestDispatcher("/postControl?action=listByMain").forward(request, response);
+			view = listByMain(request, response);
 		} else {
 			switch(action) {
 			case "listByPb":
@@ -52,6 +52,21 @@ public class PostController extends HttpServlet {
 			case "insert":
 				view = insert(request, response);
 				break;
+			case "edit":
+				view = edit(request, response);
+				break;
+			case "editPost":
+				view = editPost(request, response);
+				break;
+			case "delete":
+				view = delete(request, response);
+				break;
+			case "insertReply":
+				view = insertReply(request, response);
+				break;
+			case "deleteReply":
+				view = deleteReply(option, request, response);
+				break;
 			}
 			
 			getServletContext().getRequestDispatcher("/petcafe/"+view).forward(request, response);
@@ -70,13 +85,7 @@ public class PostController extends HttpServlet {
 		HttpSession session = request.getSession();
 		new_post.setMember_id((String)session.getAttribute("mem_id"));
 		
-		/* 서버에 이미지 업로드하는 코드 필요 */
-		boolean is_success = dao.insert_image(new_post);
-		if (!is_success ) {
-			return "view/post_write.jsp";
-		}
-		
-		is_success = dao.insert(new_post);
+		boolean is_success = dao.insert(new_post);
 		if (is_success) {
 			String pb = new_post.getPostboard();
 			return listByPostboard(pb, request, response);
@@ -229,8 +238,82 @@ public class PostController extends HttpServlet {
 		
 		// 북마크 수
 		
+		// 댓글 표시
+		ReplyController replyCont = new ReplyController();
+		request.setAttribute("replys", replyCont.list(idx_int));
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("now_post_idx", idx_int);
+		
 		request.setAttribute("post", post);
 		return "view/post_view.jsp";
+	}
+	
+	public String edit(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		Post ori_post = dao.getByPostIdx(post_idx);
+		request.setAttribute("ori_post", ori_post);
+		
+		return "view/post_edit.jsp";
+	}
+	
+	public String editPost(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		
+		Post new_post = new Post();
+		
+		try {
+			BeanUtils.populate(new_post, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		boolean is_success = dao.update(post_idx, new_post);
+		if (is_success) {
+			String pb = new_post.getPostboard();
+			return listByPostboard(pb, request, response);
+		} else {
+			request.setAttribute("ori_post", new_post);
+			return "view/post_edit.jsp";
+		}
+	}
+	
+	public String delete(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+
+		boolean is_success = dao.delete(post_idx);
+		if (is_success) {
+			return listByMain(request, response);
+		} else {
+			String idx_str = Integer.toString(post_idx);
+			return viewPost(idx_str, request, response);
+		}
+	}
+	
+	public String insertReply(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		
+		ReplyController replyCont = new ReplyController();
+	
+		replyCont.insert(post_idx, request, response);
+		
+		String idx_str = Integer.toString(post_idx);
+		return viewPost(idx_str, request, response);
+	}
+	
+	public String deleteReply(String now_reply_idx_str, HttpServletRequest request, HttpServletResponse response) {
+		int reply_idx_int = Integer.parseInt(now_reply_idx_str);
+		ReplyController replyCont = new ReplyController();
+		replyCont.delete(reply_idx_int);
+		
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		String post_idx_str = Integer.toString(post_idx);
+		return viewPost(post_idx_str, request, response);
 	}
        
     /**

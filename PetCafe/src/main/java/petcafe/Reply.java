@@ -6,6 +6,7 @@ public class Reply {
 	private String member_id;
 	private String reply_date;
 	private String body;
+	private String member_name;
 	
 	public int getReply_idx() {
 		return reply_idx;
@@ -36,5 +37,11 @@ public class Reply {
 	}
 	public void setBody(String body) {
 		this.body = body;
+	}
+	public String getMember_name() {
+		return member_name;
+	}
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
 	}
 }

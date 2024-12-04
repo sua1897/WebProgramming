@@ -138,4 +138,31 @@ public class MemberDAO {
 		
 		return name;
 	}
+	
+	public String getId(String input_name) {
+		open();
+		String id = "";
+		String sql = "SELECT id FROM member WHERE name=?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, input_name);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				// 일치하는 아이디
+				id = rs.getString(1);
+			} else {
+				// 아이디가 존재하지 않음
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return id;
+	}
 }
