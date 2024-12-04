@@ -85,7 +85,7 @@ public class MemberController extends HttpServlet {
 		if (!success) {
 			// 로그인 오류 처리
 			// 경고창을 띄우는 기능???
-			view = "/petcafe/tmp/tmp_login.jsp";
+			view = "/petcafe/view/login.jsp";
 		} else {
 			// mem의 id와 name을 세션에 저장
 			HttpSession session = request.getSession();

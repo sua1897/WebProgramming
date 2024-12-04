@@ -39,7 +39,7 @@
   	<% if (now_pb.equals("bookmark")) { %>
   <button type="button" class="btn active" data-bs-toggle="button" aria-pressed="true" onclick="document.location.href='/petcafe/postControl?action=listByBk&option=all'">북마크 게시글</button>
   	<% } else { %>
-  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByBk&option=all'">북마크 게시글</button>
+  <button type="button" class="btn" data-bs-toggle="button" onclick="document.location.href='/petcafe/postControl?action=listByBk'">북마크 게시글</button>
   	<% } %>
   	<% } %>
   
