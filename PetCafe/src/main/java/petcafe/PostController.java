@@ -67,6 +67,18 @@ public class PostController extends HttpServlet {
 			case "deleteReply":
 				view = deleteReply(option, request, response);
 				break;
+			case "addBookmark":
+				view = addBookmark(request, response);
+				break;
+			case "deleteBookmark":
+				view = deleteBookmark(request, response);
+				break;
+			case "addLike_it":
+				view = addLike_it(request, response);
+				break;
+			case "deleteLike_it":
+				view = deleteLike_it(request, response);
+				break;
 			}
 			
 			getServletContext().getRequestDispatcher("/petcafe/"+view).forward(request, response);
@@ -208,6 +220,8 @@ public class PostController extends HttpServlet {
 	
 	public String viewPost(String idx_str, HttpServletRequest request, HttpServletResponse response) {
 		int idx_int = Integer.parseInt(idx_str);
+		HttpSession session = request.getSession();
+		String now_mem_id = (String)session.getAttribute("mem_id");
 		
 		// post 기본 정보
 		Post post = dao.getByPostIdx(idx_int);
@@ -225,24 +239,22 @@ public class PostController extends HttpServlet {
 		post.setMember_name(writer_name);
 		
 		// 첨부 이미지
-		/*
-		String img_str = post.getImage();
-		if (img_str == null) {
-			img_str = "";
-		}
-		request.setAttribute("now_post_img", img_str);
-		*/
 		request.setAttribute("now_post_img", "");
 		
 		// 좋아요 수
+		Like_itController like_itCont = new Like_itController();
+		request.setAttribute("is_like_it_checked", like_itCont.isChecked(idx_int, now_mem_id));
+		request.setAttribute("like_it_count", like_itCont.count(idx_int));
 		
 		// 북마크 수
+		BookmarkController bookmarkCont = new BookmarkController();
+		request.setAttribute("is_bookmark_checked", bookmarkCont.isChecked(idx_int, now_mem_id));
+		request.setAttribute("bookmark_count", bookmarkCont.count(idx_int));
 		
 		// 댓글 표시
 		ReplyController replyCont = new ReplyController();
 		request.setAttribute("replys", replyCont.list(idx_int));
 		
-		HttpSession session = request.getSession();
 		session.setAttribute("now_post_idx", idx_int);
 		
 		request.setAttribute("post", post);
@@ -312,6 +324,54 @@ public class PostController extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		int post_idx = (int)session.getAttribute("now_post_idx");
+		String post_idx_str = Integer.toString(post_idx);
+		return viewPost(post_idx_str, request, response);
+	}
+	
+	public String addBookmark(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		String member_id = (String)session.getAttribute("mem_id");
+		
+		BookmarkController bookmarkCont = new BookmarkController();
+		bookmarkCont.insert(post_idx, member_id);
+		
+		String post_idx_str = Integer.toString(post_idx);
+		return viewPost(post_idx_str, request, response);
+	}
+	
+	public String deleteBookmark(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		String member_id = (String)session.getAttribute("mem_id");
+		
+		BookmarkController bookmarkCont = new BookmarkController();
+		bookmarkCont.delete(post_idx, member_id);
+		
+		String post_idx_str = Integer.toString(post_idx);
+		return viewPost(post_idx_str, request, response);
+	}
+	
+	public String addLike_it(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		String member_id = (String)session.getAttribute("mem_id");
+		
+		Like_itController like_itCont = new Like_itController();
+		like_itCont.insert(post_idx, member_id);
+		
+		String post_idx_str = Integer.toString(post_idx);
+		return viewPost(post_idx_str, request, response);
+	}
+	
+	public String deleteLike_it(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int post_idx = (int)session.getAttribute("now_post_idx");
+		String member_id = (String)session.getAttribute("mem_id");
+		
+		Like_itController like_itCont = new Like_itController();
+		like_itCont.delete(post_idx, member_id);
+		
 		String post_idx_str = Integer.toString(post_idx);
 		return viewPost(post_idx_str, request, response);
 	}

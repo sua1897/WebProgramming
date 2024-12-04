@@ -192,7 +192,7 @@ public class PostDAO {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Post> posts = new ArrayList<>();
 		
-		String sql = "SELECT * FROM post WHERE post_idx=(SELECT post_idx FROM bookmark WHERE member_id=?) ORDER BY post_date DESC";
+		String sql = "SELECT * FROM post WHERE post_idx IN (SELECT post_idx FROM bookmark WHERE member_id=?) ORDER BY post_date DESC";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
