@@ -31,7 +31,7 @@ public class PostController extends HttpServlet {
 		String view = "";
 		
 		if (request.getParameter("action") == null) {
-			getServletContext().getRequestDispatcher("/petcafe/view/mainpage.jsp").forward(request, response);
+			getServletContext().getRequestDispatcher("/postControl?action=listByMain").forward(request, response);
 		} else {
 			switch(action) {
 			case "listByPb":
@@ -39,6 +39,12 @@ public class PostController extends HttpServlet {
 				break;
 			case "listByBk":
 				view = listByBookmark(request, response);
+				break;
+			case "listByMain":
+				view = listByMain(request, response);
+				break;
+			case "search":
+				view = search(request, response);
 				break;
 			case "postView":
 				view = viewPost(option, request, response);
@@ -64,7 +70,13 @@ public class PostController extends HttpServlet {
 		HttpSession session = request.getSession();
 		new_post.setMember_id((String)session.getAttribute("mem_id"));
 		
-		boolean is_success = dao.insert(new_post);
+		/* 서버에 이미지 업로드하는 코드 필요 */
+		boolean is_success = dao.insert_image(new_post);
+		if (!is_success ) {
+			return "view/post_write.jsp";
+		}
+		
+		is_success = dao.insert(new_post);
 		if (is_success) {
 			String pb = new_post.getPostboard();
 			return listByPostboard(pb, request, response);
@@ -98,6 +110,93 @@ public class PostController extends HttpServlet {
 		return "view/postboard_view.jsp";
 	}
 	
+	public String listByMain(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+		boolean is_member = false;
+		String mem_id = (String)session.getAttribute("mem_id");
+		if (mem_id != null) {
+			is_member = true;
+		}
+		
+		request.setAttribute("posts_free", dao.getByPostboard("free", is_member));
+		request.setAttribute("posts_ask", dao.getByPostboard("ask", is_member));
+		
+		session.setAttribute("now_pb", "");
+		
+		return "view/mainpage.jsp";
+	}
+	
+	public String search(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String now_pb = (String)session.getAttribute("now_pb");
+		
+		String view = "/postControl?action=listByMain";
+		
+		String search_option = request.getParameter("search_option");
+		String search_text = request.getParameter("search_text");
+		
+		switch(search_option) {
+		case "title":
+			view = searchByTitle(search_text, now_pb, request, response);
+			break;
+		case "body":
+			view = searchByBody(search_text, now_pb, request, response);
+			break;
+		case "writer":
+			view = searchByWriter(search_text, now_pb, request, response);
+			break;
+		}
+		
+		return view;
+	}
+	
+	
+	public String searchByTitle(String title, String pb, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+		boolean is_member = false;
+		String mem_id = (String)session.getAttribute("mem_id");
+		if (mem_id != null) {
+			is_member = true;
+		}
+		
+		request.setAttribute("posts", dao.searchByTitle(title, pb, is_member));
+		
+		return "view/postboard_view.jsp";
+		
+	}
+	
+	public String searchByBody(String body, String pb, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+		boolean is_member = false;
+		String mem_id = (String)session.getAttribute("mem_id");
+		if (mem_id != null) {
+			is_member = true;
+		}
+		
+		request.setAttribute("posts", dao.searchByBody(body, pb, is_member));
+		
+		return "view/postboard_view.jsp";
+		
+	}
+	
+	public String searchByWriter(String writer_name, String pb, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+		boolean is_member = false;
+		String mem_id = (String)session.getAttribute("mem_id");
+		if (mem_id != null) {
+			is_member = true;
+		}
+		
+		request.setAttribute("posts", dao.searchByWriter(writer_name, pb, is_member));
+		
+		return "view/postboard_view.jsp";
+		
+	}
+	
 	public String viewPost(String idx_str, HttpServletRequest request, HttpServletResponse response) {
 		int idx_int = Integer.parseInt(idx_str);
 		
@@ -117,11 +216,14 @@ public class PostController extends HttpServlet {
 		post.setMember_name(writer_name);
 		
 		// 첨부 이미지
+		/*
 		String img_str = post.getImage();
 		if (img_str == null) {
 			img_str = "";
 		}
 		request.setAttribute("now_post_img", img_str);
+		*/
+		request.setAttribute("now_post_img", "");
 		
 		// 좋아요 수
 		

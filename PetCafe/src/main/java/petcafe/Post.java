@@ -8,7 +8,8 @@ public class Post {
 	private String post_date;
 	private String title;
 	private String body;
-	private String image;
+	private String image_str;
+	private int image_idx;
 	
 	private String postboard_kr;
 	private String member_name;
@@ -55,11 +56,17 @@ public class Post {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public String getImage() {
-		return image;
+	public String getImage_str() {
+		return image_str;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	public void setImage_str(String image_str) {
+		this.image_str = image_str;
+	}
+	public int getImage_idx() {
+		return image_idx;
+	}
+	public void setImage_idx(int image_idx) {
+		this.image_idx = image_idx;
 	}
 	public String getPostboard_kr() {
 		return postboard_kr;

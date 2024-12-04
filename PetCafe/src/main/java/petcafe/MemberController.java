@@ -47,13 +47,13 @@ public class MemberController extends HttpServlet {
 				break;
 			}
 			
-			getServletContext().getRequestDispatcher("/petcafe/"+view).forward(request, response);
+			getServletContext().getRequestDispatcher(view).forward(request, response);
 		}
 	}
 	
 	public String list(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("members", dao.getAll());
-		return "tmp/member_db_test.jsp";
+		return "/petcafe/tmp/member_db_test.jsp";
 	}
 	
 	public String insert(HttpServletRequest request, HttpServletResponse response) {
@@ -85,7 +85,7 @@ public class MemberController extends HttpServlet {
 		if (!success) {
 			// 로그인 오류 처리
 			// 경고창을 띄우는 기능???
-			view = "tmp/tmp_login.jsp";
+			view = "/petcafe/tmp/tmp_login.jsp";
 		} else {
 			// mem의 id와 name을 세션에 저장
 			HttpSession session = request.getSession();
@@ -97,7 +97,7 @@ public class MemberController extends HttpServlet {
 			session.setAttribute("mem_id", mem_id);
 			session.setAttribute("mem_name", mem_name);
 			
-			view = "view/mainpage.jsp";
+			view = "/postControl?action=listByMain";
 		}
 		
 		return view;
@@ -108,7 +108,7 @@ public class MemberController extends HttpServlet {
 		session.removeAttribute("mem_id");
 		session.removeAttribute("mem_name");
 		
-		return "view/mainpage.jsp";
+		return "/postControl?action=listByMain";
 	}
 	
        
