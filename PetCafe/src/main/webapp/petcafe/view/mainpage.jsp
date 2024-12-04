@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,16 +36,11 @@
    			<div class="row">
    				<div class="col">
    					<div class="list-group list-group-flush">
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
+   						<c:forEach items="${posts_free}" var="post_free">
+   					
+  						<a href="/petcafe/postControl?action=postView&option=${post_free.post_idx}" class="list-group-item list-group-item-action">${post_free.title}</a>
+  						
+  						</c:forEach>
   					</div>
    				</div>
    			</div>
@@ -66,16 +62,11 @@
    			<div class="row">
    				<div class="col">
    					<div class="list-group list-group-flush">
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
-  						<a href="#" class="list-group-item list-group-item-action">게시글 제목 / 작성자 / 좋아요</a>
+  						<c:forEach items="${posts_ask}" var="post_ask">
+   					
+  						<a href="/petcafe/postControl?action=postView&option=${post_ask.post_idx}" class="list-group-item list-group-item-action">${post_ask.title}</a>
+  						
+  						</c:forEach>
   					</div>
    				</div>
    			</div>
